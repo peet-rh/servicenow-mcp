@@ -146,6 +146,15 @@ system_administrator:
   - list_syslog_entries
   - get_syslog_entry
 
+vulnerability:
+  - list_vulnerabilities
+  - get_vulnerability
+  - list_vulnerable_items
+  - get_vulnerable_item
+  - list_third_party_entries
+  - list_cve_entries
+  - get_cve_entry
+
 full:
   # Incident Management
   - create_incident
@@ -257,4 +266,11 @@ full:
   # Project Management
   - create_project
   - update_project
-  - list_projects
+  - list_projects  # Vulnerability (read-only)
+  - list_vulnerabilities
+  - get_vulnerability
+  - list_vulnerable_items
+  - get_vulnerable_item
+  - list_third_party_entries
+  - list_cve_entries
+  - get_cve_entry

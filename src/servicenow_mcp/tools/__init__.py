@@ -114,7 +114,21 @@ from servicenow_mcp.tools.project_tools import (
     list_projects,
 )
 # from servicenow_mcp.tools.problem_tools import create_problem, update_problem
-# from servicenow_mcp.tools.request_tools import create_request, update_request
+from servicenow_mcp.tools.request_tools import (
+    get_request_by_number,
+    list_requests,
+    get_request_item_by_number,
+    list_request_items,
+)
+from servicenow_mcp.tools.vulnerability_tools import (
+    list_vulnerabilities,
+    get_vulnerability,
+    list_vulnerable_items,
+    get_vulnerable_item,
+    list_third_party_entries,
+    list_cve_entries,
+    get_cve_entry,
+)
 
 __all__ = [
     # Incident tools
@@ -224,9 +238,22 @@ __all__ = [
     "list_projects",
 
     
+    # Request tools
+    "get_request_by_number",
+    "list_requests",
+    "get_request_item_by_number",
+    "list_request_items",
+
+    # Vulnerability tools (read-only)
+    "list_vulnerabilities",
+    "get_vulnerability",
+    "list_vulnerable_items",
+    "get_vulnerable_item",
+    "list_third_party_entries",
+    "list_cve_entries",
+    "get_cve_entry",
+
     # Future tools
     # "create_problem",
     # "update_problem",
-    # "create_request",
-    # "update_request",
 ] 

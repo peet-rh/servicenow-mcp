@@ -337,6 +337,36 @@ from servicenow_mcp.tools.project_tools import (
     update_project as update_project_tool,
     list_projects as list_projects_tool,
 )
+from servicenow_mcp.tools.request_tools import (
+    GetRequestByNumberParams,
+    ListRequestsParams,
+    GetRequestItemByNumberParams,
+    ListRequestItemsParams,
+)
+from servicenow_mcp.tools.request_tools import (
+    get_request_by_number as get_request_by_number_tool,
+    list_requests as list_requests_tool,
+    get_request_item_by_number as get_request_item_by_number_tool,
+    list_request_items as list_request_items_tool,
+)
+from servicenow_mcp.tools.vulnerability_tools import (
+    ListVulnerabilitiesParams,
+    GetVulnerabilityParams,
+    ListVulnerableItemsParams,
+    GetVulnerableItemParams,
+    ListThirdPartyEntriesParams,
+    ListCveEntriesParams,
+    GetCveEntryParams,
+)
+from servicenow_mcp.tools.vulnerability_tools import (
+    list_vulnerabilities as list_vulnerabilities_tool,
+    get_vulnerability as get_vulnerability_tool,
+    list_vulnerable_items as list_vulnerable_items_tool,
+    get_vulnerable_item as get_vulnerable_item_tool,
+    list_third_party_entries as list_third_party_entries_tool,
+    list_cve_entries as list_cve_entries_tool,
+    get_cve_entry as get_cve_entry_tool,
+)
 
 # Define a type alias for the Pydantic models or dataclasses used for params
 ParamsModel = Type[Any]  # Use Type[Any] for broader compatibility initially
@@ -952,6 +982,85 @@ def get_tool_definitions(
             str,  # Expects JSON string
             "List projects from ServiceNow",
             "json",  # Tool returns list/dict
+        ),
+        # Service Request Tools
+        "get_request_by_number": (
+            get_request_by_number_tool,
+            GetRequestByNumberParams,
+            str,
+            "Fetch a service catalog request (UR) by number from ServiceNow",
+            "json_dict",
+        ),
+        "list_requests": (
+            list_requests_tool,
+            ListRequestsParams,
+            str,
+            "List service catalog requests from ServiceNow",
+            "json",
+        ),
+        "get_request_item_by_number": (
+            get_request_item_by_number_tool,
+            GetRequestItemByNumberParams,
+            str,
+            "Fetch a requested item (RITM) by number from ServiceNow",
+            "json_dict",
+        ),
+        "list_request_items": (
+            list_request_items_tool,
+            ListRequestItemsParams,
+            str,
+            "List requested items from ServiceNow, optionally filtered by parent request",
+            "json",
+        ),
+        # Vulnerability Tools (read-only)
+        "list_vulnerabilities": (
+            list_vulnerabilities_tool,
+            ListVulnerabilitiesParams,
+            str,
+            "List vulnerability groups (VUL) from ServiceNow",
+            "json",
+        ),
+        "get_vulnerability": (
+            get_vulnerability_tool,
+            GetVulnerabilityParams,
+            str,
+            "Get a specific vulnerability group by VUL number or sys_id",
+            "json_dict",
+        ),
+        "list_vulnerable_items": (
+            list_vulnerable_items_tool,
+            ListVulnerableItemsParams,
+            str,
+            "List vulnerable items (VIT) from ServiceNow",
+            "json",
+        ),
+        "get_vulnerable_item": (
+            get_vulnerable_item_tool,
+            GetVulnerableItemParams,
+            str,
+            "Get a specific vulnerable item by VIT number or sys_id",
+            "json_dict",
+        ),
+        "list_third_party_entries": (
+            list_third_party_entries_tool,
+            ListThirdPartyEntriesParams,
+            str,
+            "List third-party vulnerability entries (Qualys QIDs) from ServiceNow",
+            "json",
+        ),
+        "list_cve_entries": (
+            list_cve_entries_tool,
+            ListCveEntriesParams,
+            str,
+            "List CVE entries from ServiceNow",
+            "json",
+        ),
+        "get_cve_entry": (
+            get_cve_entry_tool,
+            GetCveEntryParams,
+            str,
+            "Get a specific CVE entry by CVE ID or sys_id",
+            "json_dict",
         ),
     }
     return tool_definitions
