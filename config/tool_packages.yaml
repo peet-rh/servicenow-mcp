@@ -151,6 +151,8 @@ vulnerability:
   - get_vulnerability
   - list_vulnerable_items
   - get_vulnerable_item
+  - list_vulnerability_group_items
+  - get_universal_request
   - list_third_party_entries
   - list_cve_entries
   - get_cve_entry
