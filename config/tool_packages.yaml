@@ -266,11 +266,19 @@ full:
   # Project Management
   - create_project
   - update_project
-  - list_projects  # Vulnerability (read-only)
+  - list_projects
+  # Service Requests
+  - get_universal_request
+  - get_request_by_number
+  - list_requests
+  - get_request_item_by_number
+  - list_request_items
+  # Vulnerability Management
   - list_vulnerabilities
   - get_vulnerability
   - list_vulnerable_items
   - get_vulnerable_item
+  - list_vulnerability_group_items
   - list_third_party_entries
   - list_cve_entries
   - get_cve_entry

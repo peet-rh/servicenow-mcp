@@ -338,12 +338,14 @@ from servicenow_mcp.tools.project_tools import (
     list_projects as list_projects_tool,
 )
 from servicenow_mcp.tools.request_tools import (
+    GetUniversalRequestParams,
     GetRequestByNumberParams,
     ListRequestsParams,
     GetRequestItemByNumberParams,
     ListRequestItemsParams,
 )
 from servicenow_mcp.tools.request_tools import (
+    get_universal_request as get_universal_request_tool,
     get_request_by_number as get_request_by_number_tool,
     list_requests as list_requests_tool,
     get_request_item_by_number as get_request_item_by_number_tool,
@@ -354,6 +356,7 @@ from servicenow_mcp.tools.vulnerability_tools import (
     GetVulnerabilityParams,
     ListVulnerableItemsParams,
     GetVulnerableItemParams,
+    ListVulnerabilityGroupItemsParams,
     ListThirdPartyEntriesParams,
     ListCveEntriesParams,
     GetCveEntryParams,
@@ -363,6 +366,7 @@ from servicenow_mcp.tools.vulnerability_tools import (
     get_vulnerability as get_vulnerability_tool,
     list_vulnerable_items as list_vulnerable_items_tool,
     get_vulnerable_item as get_vulnerable_item_tool,
+    list_vulnerability_group_items as list_vulnerability_group_items_tool,
     list_third_party_entries as list_third_party_entries_tool,
     list_cve_entries as list_cve_entries_tool,
     get_cve_entry as get_cve_entry_tool,
@@ -984,6 +988,13 @@ def get_tool_definitions(
             "json",  # Tool returns list/dict
         ),
         # Service Request Tools
+        "get_universal_request": (
+            get_universal_request_tool,
+            GetUniversalRequestParams,
+            str,
+            "Fetch a Universal Request (UR) by number from ServiceNow. UR tickets live in the task table, not sc_request.",
+            "json_dict",
+        ),
         "get_request_by_number": (
             get_request_by_number_tool,
             GetRequestByNumberParams,
@@ -1040,6 +1051,13 @@ def get_tool_definitions(
             str,
             "Get a specific vulnerable item by VIT number or sys_id",
             "json_dict",
+        ),
+        "list_vulnerability_group_items": (
+            list_vulnerability_group_items_tool,
+            ListVulnerabilityGroupItemsParams,
+            str,
+            "List VITs belonging to a VUL remediation task via the join table (sn_vul_m2m_vul_group_item). Returns dot-walked VIT details including hostname, state, and risk score. Required for identifying which hosts belong to a specific VUL before splitting.",
+            "json",
         ),
         "list_third_party_entries": (
             list_third_party_entries_tool,

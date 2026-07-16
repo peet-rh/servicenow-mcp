@@ -96,8 +96,9 @@ class ServiceNowMCP:
             self.config = config
 
         self.auth_manager = AuthManager(self.config.auth, self.config.instance_url)
-        self.mcp_server = Server("ServiceNow")  # Use low-level Server
-        self.name = "ServiceNow"
+        server_name = os.environ.get("MCP_SERVER_NAME", "ServiceNow")
+        self.mcp_server = Server(server_name)
+        self.name = server_name
 
         self.package_definitions: Dict[str, List[str]] = {}
         self.enabled_tool_names: List[str] = []
