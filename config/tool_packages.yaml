@@ -156,6 +156,7 @@ vulnerability:
   - list_third_party_entries
   - list_cve_entries
   - get_cve_entry
+  - create_false_positive
 
 full:
   # Incident Management
@@ -284,3 +285,4 @@ full:
   - list_third_party_entries
   - list_cve_entries
   - get_cve_entry
+  - create_false_positive
