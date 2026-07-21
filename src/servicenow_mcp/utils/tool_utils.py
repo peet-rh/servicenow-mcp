@@ -361,6 +361,8 @@ from servicenow_mcp.tools.vulnerability_tools import (
     ListCveEntriesParams,
     GetCveEntryParams,
     CreateFalsePositiveParams,
+    ListChangeApprovalsParams,
+    GetChangeApprovalParams,
 )
 from servicenow_mcp.tools.vulnerability_tools import (
     list_vulnerabilities as list_vulnerabilities_tool,
@@ -372,6 +374,8 @@ from servicenow_mcp.tools.vulnerability_tools import (
     list_cve_entries as list_cve_entries_tool,
     get_cve_entry as get_cve_entry_tool,
     create_false_positive as create_false_positive_tool,
+    list_change_approvals as list_change_approvals_tool,
+    get_change_approval as get_change_approval_tool,
 )
 
 # Define a type alias for the Pydantic models or dataclasses used for params
@@ -1087,6 +1091,20 @@ def get_tool_definitions(
             CreateFalsePositiveParams,
             str,
             "File a false positive request (VCA) against a VUL remediation task. Looks up the VUL by number, then creates a sn_vul_change_approval record with the provided justification and KB article reference.",
+            "json_dict",
+        ),
+        "list_change_approvals": (
+            list_change_approvals_tool,
+            ListChangeApprovalsParams,
+            str,
+            "List vulnerability change approval requests (VCA) from ServiceNow. Supports filtering by state and VUL number.",
+            "json",
+        ),
+        "get_change_approval": (
+            get_change_approval_tool,
+            GetChangeApprovalParams,
+            str,
+            "Get a specific vulnerability change approval (VCA) by VCA number or sys_id",
             "json_dict",
         ),
     }

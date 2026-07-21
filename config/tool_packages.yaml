@@ -157,8 +157,11 @@ vulnerability:
   - list_cve_entries
   - get_cve_entry
   - create_false_positive
+  - list_change_approvals
+  - get_change_approval
 
 full:
+
   # Incident Management
   - create_incident
   - update_incident
@@ -286,3 +289,5 @@ full:
   - list_cve_entries
   - get_cve_entry
   - create_false_positive
+  - list_change_approvals
+  - get_change_approval
