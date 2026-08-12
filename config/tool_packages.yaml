@@ -157,6 +157,7 @@ vulnerability:
   - list_cve_entries
   - get_cve_entry
   - create_false_positive
+  - create_exception
   - list_change_approvals
   - get_change_approval
 
@@ -279,6 +280,8 @@ full:
   - list_requests
   - get_request_item_by_number
   - list_request_items
+  - get_catalog_task_by_number
+  - list_catalog_tasks
   # Vulnerability Management
   - list_vulnerabilities
   - get_vulnerability
@@ -289,5 +292,6 @@ full:
   - list_cve_entries
   - get_cve_entry
   - create_false_positive
+  - create_exception
   - list_change_approvals
   - get_change_approval
