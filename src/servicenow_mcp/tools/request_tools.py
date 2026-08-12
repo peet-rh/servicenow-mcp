@@ -55,6 +55,22 @@ class ListRequestItemsParams(BaseModel):
     query: Optional[str] = Field(None, description="Search query for requested items")
 
 
+class GetCatalogTaskByNumberParams(BaseModel):
+    """Parameters for fetching a catalog task (CTASK) by its number."""
+
+    task_number: str = Field(..., description="The number of the catalog task to fetch (e.g. CTASK0123456)")
+
+
+class ListCatalogTasksParams(BaseModel):
+    """Parameters for listing catalog tasks (sc_task), e.g. fulfillment tasks under a RITM."""
+
+    request_item_number: Optional[str] = Field(None, description="Filter by parent requested item number (e.g. RITM0123456)")
+    limit: int = Field(10, description="Maximum number of tasks to return")
+    offset: int = Field(0, description="Offset for pagination")
+    state: Optional[str] = Field(None, description="Filter by task state")
+    query: Optional[str] = Field(None, description="Search query for catalog tasks")
+
+
 def get_universal_request(
     config: ServerConfig,
     auth_manager: AuthManager,
@@ -423,4 +439,152 @@ def list_request_items(
             "success": False,
             "message": f"Failed to list requested items: {str(e)}",
             "items": [],
+        }
+
+
+def get_catalog_task_by_number(
+    config: ServerConfig,
+    auth_manager: AuthManager,
+    params: GetCatalogTaskByNumberParams,
+) -> dict:
+    """Fetch a single catalog task (CTASK) from ServiceNow by its number."""
+    api_url = f"{config.api_url}/table/sc_task"
+
+    query_params = {
+        "sysparm_query": f"number={params.task_number}",
+        "sysparm_limit": 1,
+        "sysparm_display_value": "true",
+        "sysparm_exclude_reference_link": "true",
+    }
+
+    try:
+        response = requests.get(
+            api_url,
+            params=query_params,
+            headers=auth_manager.get_headers(),
+            timeout=config.timeout,
+        )
+        response.raise_for_status()
+
+        data = response.json()
+        result = data.get("result", [])
+
+        if not result:
+            return {
+                "success": False,
+                "message": f"Catalog task not found: {params.task_number}",
+            }
+
+        task_data = result[0]
+
+        def _display(field):
+            val = task_data.get(field)
+            if isinstance(val, dict):
+                return val.get("display_value")
+            return val
+
+        task_record = {
+            "sys_id": task_data.get("sys_id"),
+            "number": task_data.get("number"),
+            "short_description": task_data.get("short_description"),
+            "description": task_data.get("description"),
+            "state": _display("state"),
+            "priority": task_data.get("priority"),
+            "request_item": _display("request_item"),
+            "requested_for": _display("requested_for"),
+            "opened_by": _display("opened_by"),
+            "assigned_to": _display("assigned_to"),
+            "assignment_group": _display("assignment_group"),
+            "comments": task_data.get("comments"),
+            "work_notes": task_data.get("work_notes"),
+            "created_on": task_data.get("sys_created_on"),
+            "updated_on": task_data.get("sys_updated_on"),
+            "closed_at": task_data.get("closed_at"),
+        }
+
+        return {
+            "success": True,
+            "message": f"Catalog task {params.task_number} found",
+            "task": task_record,
+        }
+
+    except requests.RequestException as e:
+        logger.error(f"Failed to fetch catalog task: {e}")
+        return {
+            "success": False,
+            "message": f"Failed to fetch catalog task: {str(e)}",
+        }
+
+
+def list_catalog_tasks(
+    config: ServerConfig,
+    auth_manager: AuthManager,
+    params: ListCatalogTasksParams,
+) -> dict:
+    """List catalog tasks (sc_task) from ServiceNow, e.g. fulfillment tasks under a RITM."""
+    api_url = f"{config.api_url}/table/sc_task"
+
+    query_params = {
+        "sysparm_limit": params.limit,
+        "sysparm_offset": params.offset,
+        "sysparm_display_value": "true",
+        "sysparm_exclude_reference_link": "true",
+    }
+
+    filters = []
+    if params.request_item_number:
+        filters.append(f"request_item.number={params.request_item_number}")
+    if params.state:
+        filters.append(f"state={params.state}")
+    if params.query:
+        filters.append(f"short_descriptionLIKE{params.query}^ORdescriptionLIKE{params.query}")
+
+    if filters:
+        query_params["sysparm_query"] = "^".join(filters)
+
+    try:
+        response = requests.get(
+            api_url,
+            params=query_params,
+            headers=auth_manager.get_headers(),
+            timeout=config.timeout,
+        )
+        response.raise_for_status()
+
+        data = response.json()
+        tasks = []
+
+        for task_data in data.get("result", []):
+            def _display(field, d=task_data):
+                val = d.get(field)
+                if isinstance(val, dict):
+                    return val.get("display_value")
+                return val
+
+            tasks.append({
+                "sys_id": task_data.get("sys_id"),
+                "number": task_data.get("number"),
+                "short_description": task_data.get("short_description"),
+                "state": _display("state"),
+                "request_item": _display("request_item"),
+                "assigned_to": _display("assigned_to"),
+                "assignment_group": _display("assignment_group"),
+                "comments": task_data.get("comments"),
+                "work_notes": task_data.get("work_notes"),
+                "created_on": task_data.get("sys_created_on"),
+                "updated_on": task_data.get("sys_updated_on"),
+            })
+
+        return {
+            "success": True,
+            "message": f"Found {len(tasks)} catalog tasks",
+            "tasks": tasks,
+        }
+
+    except requests.RequestException as e:
+        logger.error(f"Failed to list catalog tasks: {e}")
+        return {
+            "success": False,
+            "message": f"Failed to list catalog tasks: {str(e)}",
+            "tasks": [],
         }

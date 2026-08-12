@@ -527,6 +527,8 @@ def list_incidents(
                 "subcategory": incident_data.get("subcategory"),
                 "created_on": incident_data.get("sys_created_on"),
                 "updated_on": incident_data.get("sys_updated_on"),
+                "comments": incident_data.get("comments"),
+                "work_notes": incident_data.get("work_notes"),
             }
             incidents.append(incident)
         
@@ -607,6 +609,8 @@ def get_incident_by_number(
             "subcategory": incident_data.get("subcategory"),
             "created_on": incident_data.get("sys_created_on"),
             "updated_on": incident_data.get("sys_updated_on"),
+            "comments": incident_data.get("comments"),
+            "work_notes": incident_data.get("work_notes"),
         }
 
         return {

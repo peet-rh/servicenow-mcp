@@ -343,6 +343,8 @@ from servicenow_mcp.tools.request_tools import (
     ListRequestsParams,
     GetRequestItemByNumberParams,
     ListRequestItemsParams,
+    GetCatalogTaskByNumberParams,
+    ListCatalogTasksParams,
 )
 from servicenow_mcp.tools.request_tools import (
     get_universal_request as get_universal_request_tool,
@@ -350,6 +352,8 @@ from servicenow_mcp.tools.request_tools import (
     list_requests as list_requests_tool,
     get_request_item_by_number as get_request_item_by_number_tool,
     list_request_items as list_request_items_tool,
+    get_catalog_task_by_number as get_catalog_task_by_number_tool,
+    list_catalog_tasks as list_catalog_tasks_tool,
 )
 from servicenow_mcp.tools.vulnerability_tools import (
     ListVulnerabilitiesParams,
@@ -1029,6 +1033,20 @@ def get_tool_definitions(
             ListRequestItemsParams,
             str,
             "List requested items from ServiceNow, optionally filtered by parent request",
+            "json",
+        ),
+        "get_catalog_task_by_number": (
+            get_catalog_task_by_number_tool,
+            GetCatalogTaskByNumberParams,
+            str,
+            "Fetch a catalog task (CTASK) by number from ServiceNow, including work notes/comments",
+            "json_dict",
+        ),
+        "list_catalog_tasks": (
+            list_catalog_tasks_tool,
+            ListCatalogTasksParams,
+            str,
+            "List catalog/fulfillment tasks (sc_task), optionally filtered by parent RITM",
             "json",
         ),
         # Vulnerability Tools (read-only)

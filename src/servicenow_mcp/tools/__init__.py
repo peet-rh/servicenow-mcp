@@ -120,6 +120,8 @@ from servicenow_mcp.tools.request_tools import (
     list_requests,
     get_request_item_by_number,
     list_request_items,
+    get_catalog_task_by_number,
+    list_catalog_tasks,
 )
 from servicenow_mcp.tools.vulnerability_tools import (
     list_vulnerabilities,
@@ -246,6 +248,8 @@ __all__ = [
     "list_requests",
     "get_request_item_by_number",
     "list_request_items",
+    "get_catalog_task_by_number",
+    "list_catalog_tasks",
 
     # Vulnerability tools (read-only)
     "list_vulnerabilities",
