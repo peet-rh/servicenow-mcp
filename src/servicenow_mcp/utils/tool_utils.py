@@ -361,6 +361,7 @@ from servicenow_mcp.tools.vulnerability_tools import (
     ListCveEntriesParams,
     GetCveEntryParams,
     CreateFalsePositiveParams,
+    CreateExceptionParams,
     ListChangeApprovalsParams,
     GetChangeApprovalParams,
 )
@@ -374,6 +375,7 @@ from servicenow_mcp.tools.vulnerability_tools import (
     list_cve_entries as list_cve_entries_tool,
     get_cve_entry as get_cve_entry_tool,
     create_false_positive as create_false_positive_tool,
+    create_exception as create_exception_tool,
     list_change_approvals as list_change_approvals_tool,
     get_change_approval as get_change_approval_tool,
 )
@@ -1091,6 +1093,13 @@ def get_tool_definitions(
             CreateFalsePositiveParams,
             str,
             "File a false positive request (VCA) against a VUL remediation task. Looks up the VUL by number, then creates a sn_vul_change_approval record with the provided justification and KB article reference.",
+            "json_dict",
+        ),
+        "create_exception": (
+            create_exception_tool,
+            CreateExceptionParams,
+            str,
+            "File an exception / risk-acceptance request (VCA) against a VUL remediation task. Looks up the VUL by number, then creates a sn_vul_change_approval record requesting Deferred / Fix Unavailable state with the given justification and an ignore-until end date (YYYY-MM-DD, max 1 year out). Use for EOL / no-fix-available vulnerabilities that are not eligible as false positives.",
             "json_dict",
         ),
         "list_change_approvals": (
